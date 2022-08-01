@@ -10,7 +10,8 @@ class LogProcessorInterfaceTest extends TestCase implements InterfaceTestInterfa
 
     public function testInterfacePresence()
     {
-        $this->createMock(Bkolcz\LogCleaner\LogProcessor\LogProcessorInterface::class);
+        $logProcessorInterfaceObject = $this->createMock(\Bkolcz\LogCleaner\LogProcessor\LogProcessorInterface::class);
+        $this->assertTrue(!empty($logProcessorInterfaceObject));
     }
 
     public function testInterfaceMethods()

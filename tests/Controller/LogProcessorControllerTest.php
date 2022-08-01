@@ -2,7 +2,7 @@
 
 namespace Bkolcz\LogCleaner\Tests\Controller;
 
-use Bkolcz\LogCleaner\Tests\InterfaceTestInterface;
+
 use PHPUnit\Framework\TestCase;
 
 
@@ -11,7 +11,8 @@ class LogProcessorControllerTest extends TestCase
 
     public function testPresence()
     {
-        $this->createMock(Bkolcz\LogCleaner\Controller\LogProcessorController::class);
+        $logProcessController = $this->createMock(\Bkolcz\LogCleaner\Controller\LogProcessorController::class);
+        $this->assertTrue(!empty($logProcessController));
     }
     public function testMethods()
     {
