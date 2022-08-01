@@ -1,0 +1,16 @@
+{
+    "name": "bkolcz/log-cleaner",
+    "description": "Log processor written on request of sofomo.",
+    "autoload": {
+        "psr-4": {
+            "Bkolcz\\LogCleaner\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Bartłomiej Kołcz",
+            "email": "bkolcz@bartisoft.com"
+        }
+    ],
+    "require": {}
+}
