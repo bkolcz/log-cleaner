@@ -3,10 +3,13 @@
 namespace LogCleaner;
 
 use LogCleaner\Controller\ControllerInterface;
+use LogCleaner\Controller\LogProcessorController;
 use LogCleaner\LogConfig\LogConfigInterface;
 use LogCleaner\LogConfig\StandardDbLogConfig;
 use LogCleaner\LogConfig\StandardFileLogConfig;
 use LogCleaner\LogProcessor\LogProcessorInterface;
+use LogCleaner\LogProcessor\StandardDbLogProcessor;
+use LogCleaner\LogProcessor\StandardFileLogProcessor;
 
 class Kernel
 {
@@ -62,13 +65,16 @@ class Kernel
 
     public function setProcessor(): Kernel
     {
-
+        $this->processor = match ($this->args['processor']) {
+            'db' => new StandardDbLogProcessor($this->config),
+            default => new StandardFileLogProcessor($this->config)
+        };
         return $this;
     }
 
     public function setController(): Kernel
     {
-
+        $this->controller = new LogProcessorController();
         return $this;
     }
 }
