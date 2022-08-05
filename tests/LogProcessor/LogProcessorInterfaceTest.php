@@ -1,8 +1,8 @@
 <?php
 
-namespace Bkolcz\LogCleaner\Tests\LogProcessor;
+namespace LogCleaner\Tests\LogProcessor;
 
-use Bkolcz\LogCleaner\Tests\InterfaceTestInterface;
+use LogCleaner\Tests\InterfaceTestInterface;
 use PHPUnit\Framework\TestCase;
 
 class LogProcessorInterfaceTest extends TestCase implements InterfaceTestInterface
@@ -10,7 +10,7 @@ class LogProcessorInterfaceTest extends TestCase implements InterfaceTestInterfa
 
     public function testInterfacePresence()
     {
-        $interfaceObject = $this->createMock(\Bkolcz\LogCleaner\LogProcessor\LogProcessorInterface::class);
+        $interfaceObject = $this->createMock(\LogCleaner\LogProcessor\LogProcessorInterface::class);
         $this->assertTrue(!empty($interfaceObject));
     }
 
@@ -19,11 +19,12 @@ class LogProcessorInterfaceTest extends TestCase implements InterfaceTestInterfa
      */
     public function testInterfaceMethod(string $method)
     {
-        $interfaceObject = $this->createMock(\Bkolcz\LogCleaner\LogProcessor\LogProcessorInterface::class);
+        $interfaceObject = $this->createMock(\LogCleaner\LogProcessor\LogProcessorInterface::class);
         $this->assertTrue(method_exists($interfaceObject, $method), "Method [$method] not found");
     }
 
-    public function methodProvider() : array {
+    public function methodProvider(): array
+    {
         return [
             "remove" => ["remove"],
             "removeAll" => ["removeAll"],

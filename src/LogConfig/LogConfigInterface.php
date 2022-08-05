@@ -1,15 +1,17 @@
-<?php 
+<?php
 
-namespace Bkolcz\LogCleaner\LogConfig;
+namespace LogCleaner\LogConfig;
+
 /**
  * This interface represents abstract configuration
  * for use in log processing
  */
-interface LogConfigInterface {
+interface LogConfigInterface
+{
 
     /** 
      * Method returns configuration
      * @return mixed  
      */
-    public function getConfig() : mixed;
+    public function getConfig(): mixed;
 }

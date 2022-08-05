@@ -1,6 +1,6 @@
 <?php
 
-namespace Bkolcz\LogCleaner\Tests\Controller;
+namespace LogCleaner\Tests\Controller;
 
 
 use PHPUnit\Framework\TestCase;
@@ -11,7 +11,7 @@ class LogProcessorControllerTest extends TestCase
 
     public function testPresence()
     {
-        $logProcessController = $this->createMock(\Bkolcz\LogCleaner\Controller\LogProcessorController::class);
+        $logProcessController = $this->createMock(\LogCleaner\Controller\LogProcessorController::class);
         $this->assertTrue(!empty($logProcessController));
     }
     /**
@@ -22,7 +22,7 @@ class LogProcessorControllerTest extends TestCase
      */
     public function testMethod(string $method)
     {
-        $mockedObject = $this->createMock(\Bkolcz\LogCleaner\Controller\LogProcessorController::class);
+        $mockedObject = $this->createMock(\LogCleaner\Controller\LogProcessorController::class);
         $this->assertTrue(method_exists($mockedObject, $method), "Method [$method] not found");
     }
 

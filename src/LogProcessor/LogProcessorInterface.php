@@ -1,8 +1,8 @@
 <?php
 
-namespace Bkolcz\LogCleaner\LogProcessor;
+namespace LogCleaner\LogProcessor;
 
-use Bkolcz\LogCleaner\LogConfig\LogConfigInterface;
+use LogCleaner\LogConfig\LogConfigInterface;
 
 /**
  * This interface represents log processor abstraction
@@ -10,7 +10,7 @@ use Bkolcz\LogCleaner\LogConfig\LogConfigInterface;
 interface LogProcessorInterface
 {
 
-    public function __construct(LogConfigInterface $config);    
+    public function __construct(LogConfigInterface $config);
     /**
      * remove single element using config array
      *
@@ -18,7 +18,7 @@ interface LogProcessorInterface
      *
      * @return mixed
      */
-    public function remove(array $config = []): mixed;    
+    public function remove(array $config = []): mixed;
     /**
      * remove all elements matching config array
      *
@@ -28,7 +28,7 @@ interface LogProcessorInterface
      */
     public function removeAll(array $config = []): mixed;
 
-        
+
     /**
      * analyse data using configuration array
      *

@@ -1,8 +1,8 @@
 <?php
 
-namespace Bkolcz\LogCleaner\Controller;
+namespace LogCleaner\Controller;
 
-use Bkolcz\LogCleaner\LogProcessor\LogProcessorInterface;
+use LogCleaner\LogProcessor\LogProcessorInterface;
 
 /**
  * This class controls LogProcessor
@@ -28,5 +28,4 @@ class LogProcessorController
             }
         }
     }
-
 }

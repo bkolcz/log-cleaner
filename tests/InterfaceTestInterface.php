@@ -1,11 +1,12 @@
-<?php 
+<?php
 
-namespace Bkolcz\LogCleaner\Tests;
+namespace LogCleaner\Tests;
 
 /**
  * This interface delivers must have methods in interface testing
  */
-interface InterfaceTestInterface {
+interface InterfaceTestInterface
+{
 
     /**
      * This method test if there is such interface 
@@ -26,5 +27,5 @@ interface InterfaceTestInterface {
      * 
      * @return array 
      */
-    public function methodProvider() : array;
+    public function methodProvider(): array;
 }

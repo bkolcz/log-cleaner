@@ -1,8 +1,8 @@
 <?php
 
-namespace Bkolcz\LogCleaner\Tests\LogConfig;
+namespace LogCleaner\Tests\LogConfig;
 
-use Bkolcz\LogCleaner\Tests\InterfaceTestInterface;
+use LogCleaner\Tests\InterfaceTestInterface;
 use PHPUnit\Framework\TestCase;
 
 class LogConfigInterfaceTest extends TestCase implements InterfaceTestInterface
@@ -17,7 +17,7 @@ class LogConfigInterfaceTest extends TestCase implements InterfaceTestInterface
 
     public function testInterfacePresence()
     {
-        $interfaceObject = $this->createMock(\Bkolcz\LogCleaner\LogConfig\LogConfigInterface::class);
+        $interfaceObject = $this->createMock(\LogCleaner\LogConfig\LogConfigInterface::class);
         $this->assertTrue(!empty($interfaceObject));
     }
 
@@ -26,7 +26,7 @@ class LogConfigInterfaceTest extends TestCase implements InterfaceTestInterface
      */
     public function testInterfaceMethod(string $method)
     {
-        $interfaceObject = $this->createMock(\Bkolcz\LogCleaner\LogConfig\LogConfigInterface::class);
+        $interfaceObject = $this->createMock(\LogCleaner\LogConfig\LogConfigInterface::class);
         $this->assertTrue(method_exists($interfaceObject, $method), "Method [$method] not found");
     }
 }
