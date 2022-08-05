@@ -1,9 +1,11 @@
-<?php 
+<?php
 
 namespace LogCleaner\LogConfig;
 
-class StandardDbLogConfig extends AbstractDbLogConfig {
+class StandardDbLogConfig extends AbstractDbLogConfig
+{
 
-    public function getConfig(): mixed { }
-
+    public function getConfig(): mixed
+    {
+    }
 }

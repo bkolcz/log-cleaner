@@ -8,7 +8,13 @@ namespace LogCleaner\LogConfig;
  */
 interface LogConfigInterface
 {
-
+    /**
+     * Constructor with use of json string
+     * 
+     * @param string $jsonData 
+     * @return mixed 
+     */
+    public function __construct(string $jsonData);
     /** 
      * Method returns configuration
      * @return mixed  

@@ -1,9 +1,11 @@
-<?php 
+<?php
 
 namespace LogCleaner\LogConfig;
 
-class StandardFileLogConfig extends AbstractFileLogConfig {
+class StandardFileLogConfig extends AbstractFileLogConfig
+{
 
-    public function getConfig(): mixed { }
-
+    public function getConfig(): mixed
+    {
+    }
 }
