@@ -1,1 +1,18 @@
-{}
+{
+    "headers": {
+        "0": "ip",
+        "1": "unknown",
+        "2": "unknown-2",
+        "3": "date",
+        "4": "request",
+        "5": "ams"
+    },
+    "connection": {
+        "db-name": "",
+        "table-name": "",
+        "host": "127.0.0.1",
+        "type": "mysql",
+        "user": "root",
+        "password": ""
+    }
+}

@@ -1,1 +1,18 @@
-{}
+{
+    "headers": {
+        "0": "ip",
+        "1": "unknown",
+        "2": "unknown-2",
+        "3": "date",
+        "4": "request",
+        "5": "ams"
+    },
+    "delimiter": " ",
+    "order-types": [
+        "asc",
+        "desc",
+        "mixed"
+    ],
+    "order": "asc",
+    "column-detection": "auto"
+}
