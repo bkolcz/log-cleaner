@@ -8,14 +8,25 @@ use PHPUnit\Framework\TestCase;
 class LogConfigInterfaceTest extends TestCase implements InterfaceTestInterface
 {
 
-    public function testInterfacePresence()
+    public function methodProvider(): array
     {
-        $logConfigInterfacObject = $this->createMock(\Bkolcz\LogCleaner\LogConfig\LogConfigInterface::class);
-        $this->assertTrue(!empty($logConfigInterfacObject));
+        return [
+            "getConfig" => ["getConfig"]
+        ];
     }
 
-    public function testInterfaceMethods()
+    public function testInterfacePresence()
     {
-        $this->markTestIncomplete("Not implemented test");
+        $interfaceObject = $this->createMock(\Bkolcz\LogCleaner\LogConfig\LogConfigInterface::class);
+        $this->assertTrue(!empty($interfaceObject));
+    }
+
+    /** 
+     * @dataProvider methodProvider
+     */
+    public function testInterfaceMethod(string $method)
+    {
+        $interfaceObject = $this->createMock(\Bkolcz\LogCleaner\LogConfig\LogConfigInterface::class);
+        $this->assertTrue(method_exists($interfaceObject, $method), "Method [$method] not found");
     }
 }

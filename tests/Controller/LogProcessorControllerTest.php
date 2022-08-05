@@ -14,8 +14,22 @@ class LogProcessorControllerTest extends TestCase
         $logProcessController = $this->createMock(\Bkolcz\LogCleaner\Controller\LogProcessorController::class);
         $this->assertTrue(!empty($logProcessController));
     }
-    public function testMethods()
+    /**
+     * @dataProvider methodProvider
+     *
+     * @param string $method
+     * @return void
+     */
+    public function testMethod(string $method)
     {
-        $this->markTestIncomplete("Not implemented test");
+        $mockedObject = $this->createMock(\Bkolcz\LogCleaner\Controller\LogProcessorController::class);
+        $this->assertTrue(method_exists($mockedObject, $method), "Method [$method] not found");
+    }
+
+    public function methodProvider(): array
+    {
+        return [
+            "run" => ["run"]
+        ];
     }
 }

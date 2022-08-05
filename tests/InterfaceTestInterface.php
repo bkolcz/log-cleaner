@@ -19,5 +19,12 @@ interface InterfaceTestInterface {
      *
      * @return void
      */
-    public function testInterfaceMethods();
+    public function testInterfaceMethod(string $method);
+
+    /**
+     * This method provides data for testInterfaceMethod
+     * 
+     * @return array 
+     */
+    public function methodProvider() : array;
 }

@@ -7,4 +7,9 @@ namespace Bkolcz\LogCleaner\LogConfig;
  */
 interface LogConfigInterface {
 
+    /** 
+     * Method returns configuration
+     * @return mixed  
+     */
+    public function getConfig() : mixed;
 }
