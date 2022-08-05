@@ -7,7 +7,7 @@ use LogCleaner\LogProcessor\LogProcessorInterface;
 /**
  * This class controls LogProcessor
  */
-class LogProcessorController
+class LogProcessorController implements ControllerInterface
 {
     public function run(LogProcessorInterface $processor, array $commandArray = []): mixed
     {
