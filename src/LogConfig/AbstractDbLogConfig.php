@@ -2,14 +2,6 @@
 
 namespace LogCleaner\LogConfig;
 
-abstract class AbstractDbLogConfig implements LogConfigInterface
+abstract class AbstractDbLogConfig extends AbstractLogConfig
 {
-
-    public function __construct(string $jsonData)
-    {
-    }
-
-    public function getConfig(): mixed
-    {
-    }
 }

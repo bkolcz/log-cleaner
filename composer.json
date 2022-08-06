@@ -4,12 +4,12 @@
     "description": "Log processor written on request of sofomo.",
     "autoload": {
         "psr-4": {
-            "Bkolcz\\LogCleaner\\": "src/"
+            "LogCleaner\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Bkolcz\\LogCleaner\\Tests\\": "tests/"
+            "LogCleaner\\Tests\\": "tests/"
         }
     },
     "authors": [
