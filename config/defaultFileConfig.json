@@ -8,11 +8,18 @@
         "5": "ams"
     },
     "delimiter": " ",
-    "order-types": [
+    "enclosure": "\"",
+    "orderTypes": [
         "asc",
         "desc",
         "mixed"
     ],
     "order": "asc",
-    "column-detection": "auto"
+    "columnDetection": "auto",
+    "filePath": "sample/sample-access.log",
+    "dateFilter": {
+        "spaceRegex": "/(?<=[0-9]) (?=[\\+-][0-9]{4}\\])/",
+        "spaceRegexRevert": "/(?<=[0-9])_(?=[\\+-][0-9]{4}\\])/",
+        "spaceMockCharacter": "_"
+    } 
 }
