@@ -11,21 +11,26 @@ class LogProcessorController implements ControllerInterface
 {
     public function run(LogProcessorInterface $processor, array $commandArray = []): mixed
     {
+        $response = [];
         foreach ($commandArray as $command => $body) {
+            if (!array_key_exists($command, $response)) {
+                $response[$command] = [];
+            }
             switch ($command) {
                 case 'remove':
-                    echo $processor->remove($body);
+                    array_push($response[$command], $processor->remove($body));
                     break;
                 case 'removeAll':
-                    echo $processor->removeAll($body);
+                    array_push($response[$command], $processor->removeAll($body));
                     break;
                 case 'analyse':
-                    echo $processor->analyse($body);
+                    array_push($response[$command], $processor->analyse($body));
                     break;
                 default:
-                    echo "Command not found...";
+                    array_push($response[$command], "Command not found...");
                     break;
             }
         }
+        return $response;
     }
 }

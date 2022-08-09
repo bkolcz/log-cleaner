@@ -43,7 +43,7 @@ class Kernel
 
     public function setJsonConfig(): Kernel
     {
-        $configDir = dirname(__DIR__);
+        $configDir = dirname(__DIR__) . '/config';
         if (empty($this->args['jsonData'])) {
             $this->args['jsonData'] = match ($this->args['processor']) {
                 'file' => file_get_contents($configDir . '/defaultFileConfig.json'),
@@ -58,7 +58,7 @@ class Kernel
     {
         $this->config = match ($this->args['type']) {
             'db' => new StandardDbLogConfig($this->args['jsonData']),
-            default => new StandardFileLogConfig($this->args['jsonData'])
+            default => new StandardFileLogConfig($this->args['jsonData']),
         };
         return $this;
     }

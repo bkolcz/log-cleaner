@@ -2,9 +2,8 @@
 
 namespace LogCleaner\LogConfig;
 
-use LogCleaner\Tests\LogConfig\LogConfigInterfaceTest;
 
-abstract class AbstractLogConfig extends LogConfigInterfaceTest
+abstract class AbstractLogConfig implements LogConfigInterface
 {
     protected $configData;
     public function __construct(string $jsonData)
