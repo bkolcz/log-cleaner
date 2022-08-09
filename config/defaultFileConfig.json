@@ -20,6 +20,16 @@
     "dateFilter": {
         "spaceRegex": "/(?<=[0-9]) (?=[\\+-][0-9]{4}\\])/",
         "spaceRegexRevert": "/(?<=[0-9])_(?=[\\+-][0-9]{4}\\])/",
-        "spaceMockCharacter": "_"
-    } 
+        "spaceMockCharacter": "_",
+        "replaceDateChars": {
+            "from": [
+                "[",
+                "]",
+                "_"
+            ],
+            "to": [
+                " "
+            ]
+        }
+    }
 }

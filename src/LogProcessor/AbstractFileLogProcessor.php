@@ -2,80 +2,131 @@
 
 namespace LogCleaner\LogProcessor;
 
+use LogCleaner\LogConfig\LogConfigInterface;
+use InvalidArgumentException;
+
 abstract class AbstractFileLogProcessor implements LogProcessorInterface
 {
 
-    // TODO to reshape
-    public function processFileStream(string $inputFilePath, string $outputFilePath, mixed $strategyCallback, array $args = [])
+    public function __construct(protected LogConfigInterface $config)
     {
-        // $options = getopt("f:d:");
+    }
+    public function removeAll(array $config = [
+        "inputFile" => null,
+        "outputFile" => null,
+        "stdOut" => null,
+        "dateFrom" => null,
+        "dateTo" => null,
+        "spaceRegex" => null,
+        "spaceRegexRevert" => null,
+        "spaceMockCharacter" => null,
+        "delimiter" => null,
+        "enclosure" => null,
+        "replaceDateChars" => [
+            "from" => [],
+            "to" => []
+        ],
+        "dateColumnIndex" => -1
+    ]): mixed
+    {
+        extract($config);
+        $inputFile = $inputFile ?? $this->config?->inputFile ?? "";
+        $outputFile = $outputFile ?? $this->config?->outputFile ?? "tmp_{$inputFile}";
+        $stdOut = $stdOut ?? $this->config?->$stdOut ?? null;
+        $dateFrom = $dateFrom ?? $this->config?->dateFrom ?? null;
+        $dateTo = $dateTo ?? $this->config?->dateTo ?? null;
+        $spaceRegex = $spaceRegex ?? $this->config?->spaceRegex ?? null;
+        $spaceRegexRevert = $spaceRegexRevert ?? $this->config?->spaceRegexRevert ?? null;
+        $spaceMockCharacter = $spaceMockCharacter ?? $this->config?->spaceMockCharacter ?? null;
+        $delimiter = $delimiter ?? $this->config?->delimiter ?? " ";
+        $enclosure = $enclosure ?? $this->config?->enclosure ?? null;
+        $replaceDateChars = $replaceDateChars ?? $this->config?->replaceDateChars ?? [
+            "from" => [],
+            "to" => []
+        ];
+        $dateColumnIndex = $dateColumnIndex ?? $this->config?->dateColumnIndex ?? -1;
+        $overrideFile = false;
+        if (empty($inputFile)) throw new InvalidArgumentException("No input file");
+        if ($outputFile == $inputFile) {
+            $overrideFile = true;
+            $outputFile = "tmp_{$outputFile}";
+        }
+        $fileToRead = fopen($inputFile, "r");
+        $fileToWrite = fopen($inputFile, "w");
 
-        // // var_dump($argv);
-        // $headers = [
-        //     "0" => "ip",
-        //     "1" => "unknown",
-        //     "2" => "unknown-2",
-        //     "3" => "date",
-        //     "5" => "request",
-        //     "6" => "ams"
-        // ];
-        // $older = key_exists("d", $options) ? new \DateTime($options["d"]) : null;
-        $fn = fopen($inputFilePath, "r");
-        // var_dump(feof($fn)); // DEBUG
-        $dateColumn = -1;
-        while (!feof($fn)) {
-            $dateColumnValidation = [];
+        while (!feof($fileToRead)) {
             $recordTimestamp = null;
-            $line = preg_replace("/(?<=[0-9]) (?=[\+-][0-9]{4}\])/", "_", fgets($fn));
+            $line = preg_replace($spaceRegex, $spaceMockCharacter, fgets($fileToRead));
             if (empty($line)) continue;
-            // $result = fgetcsv($fn, separator: " ");
-            $result = str_getcsv($line, separator: " ");
-            if ($dateColumn < 0) {
+
+            $result = str_getcsv($line, separator: $delimiter ?? " ");
+            if ($dateColumnIndex < 0) {
                 foreach ($result as $index => $value) {
                     try {
-                        $timestamp = empty($value) ? null : new \DateTime(str_replace(["[", "]", "_"], " ", $value));
+                        $timestamp = empty($value) ? null : new \DateTime(str_replace($replaceDateChars["from"], $replaceDateChars["to"], $value));
                     } catch (\Exception $e) {
                         $timestamp = null;
                     }
-                    if ($dateColumn < 0 && $timestamp?->getTimestamp() > 0) {
-                        array_push($result, $value);
-                        $dateColumn = $index;
+                    if ($dateColumnIndex < 0 && $timestamp?->getTimestamp() > 0) {
+                        $dateColumnIndex = $index;
                         $recordTimestamp = $timestamp;
-                        // break;
                     }
-                    array_push($dateColumnValidation, $timestamp?->getTimestamp());
                 }
-                // array_push($result, implode(",", $dateColumnValidation));
-                array_push($result, "time at [$dateColumn]");
             } else {
                 try {
-                    $value = $result[$dateColumn];
-                    // var_dump($value);
-                    $recordTimestamp = empty($value) ? null : new \DateTime(str_replace(["[", "]", "_"], " ", $value));
-                    // var_dump($recordTimestamp);
+                    $value = $result[$dateColumnIndex];
+                    $recordTimestamp = empty($value) ? null : new \DateTime(str_replace($replaceDateChars["from"], $replaceDateChars["to"], $value));
                 } catch (\Exception $e) {
                     $recordTimestamp = null;
                 }
-                // array_push($dateColumnValidation, $recordRimestamp?->getTimestamp());
-                // array_push($result, implode(",", $dateColumnValidation));
-                array_push($result, "time at [$dateColumn]");
             }
-            $pattern = str_repeat("%s****", count($result));
-            // echo implode("****",$result) . "\n";
-            // var_dump($recordTimestamp);
-            if (!empty($older)) {
-                // var_dump($recordTimestamp?->getTimestamp(), $older?->getTimestamp());
-                if ($recordTimestamp?->getTimestamp() > $older?->getTimestamp()) {
-                    $result[$dateColumn] = preg_replace("/(?<=[0-9])_(?=[\+-][0-9]{4}\])/", " ", $result[$dateColumn]);
-                    printf("$pattern\n", ...$result);
-                } else {
-                    // printf("$pattern\n", ...$result);
+            $pattern = str_repeat("%s{$delimiter}", count($result));
+            $pattern = substr($pattern, 0, (strlen($pattern) - strlen($delimiter)));
+            $timeperiod = !empty($dateFrom) | !empty($dateTo) << 1;
+            $printedLine = "";
+
+            switch (intval($timeperiod)) {
+                case 1:
+                    if ($recordTimestamp?->getTimestamp() > $dateFrom?->getTimestamp()) {
+                        $result[$dateColumnIndex] = preg_replace("/(?<=[0-9])_(?=[\+-][0-9]{4}\])/", " ", $result[$dateColumnIndex]);
+                        $printedLine = sprintf("$pattern\n", ...$result);
+                    }
+                    break;
+                case 2:
+                    if ($recordTimestamp?->getTimestamp() < $dateTo?->getTimestamp()) {
+                        $result[$dateColumnIndex] = preg_replace("/(?<=[0-9])_(?=[\+-][0-9]{4}\])/", " ", $result[$dateColumnIndex]);
+                        $printedLine = sprintf("$pattern\n", ...$result);
+                    }
+                case 3:
+                    if (
+                        $recordTimestamp?->getTimestamp() > $dateFrom?->getTimestamp() &&
+                        $recordTimestamp?->getTimestamp() < $dateTo?->getTimestamp()
+                    ) {
+                        $result[$dateColumnIndex] = preg_replace("/(?<=[0-9])_(?=[\+-][0-9]{4}\])/", " ", $result[$dateColumnIndex]);
+                        $printedLine = sprintf("$pattern\n", ...$result);
+                    }
+                    break;
+                default:
+                    $printedLine = sprintf("$pattern\n", ...$result);
+                    break;
+            }
+
+            if (!empty($printedLine)) {
+                if (boolval($stdOut)) {
+                    printf("%s", $printedLine);
                 }
-            } else {
-                printf("$pattern\n", ...$result);
+                fwrite($fileToWrite, $printedLine);
             }
         }
 
-        fclose($fn);
+        fclose($fileToRead);
+        fclose($fileToWrite);
+        if ($overrideFile) {
+            if (unlink($inputFile)) {
+                rename($outputFile, $inputFile);
+            } else {
+                echo "File {$inputFile} can't be deleted and replaced by new file.";
+            }
+        }
     }
 }

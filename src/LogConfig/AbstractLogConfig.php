@@ -1,11 +1,12 @@
-<?php 
+<?php
 
 namespace LogCleaner\LogConfig;
 
 use LogCleaner\Tests\LogConfig\LogConfigInterfaceTest;
 
-abstract class AbstractLogConfig extends LogConfigInterfaceTest {
-    private $configData;
+abstract class AbstractLogConfig extends LogConfigInterfaceTest
+{
+    protected $configData;
     public function __construct(string $jsonData)
     {
         $this->configData = json_decode($jsonData, true);
@@ -30,9 +31,10 @@ abstract class AbstractLogConfig extends LogConfigInterfaceTest {
         $trace = debug_backtrace();
         trigger_error(
             'Undefined property via __get(): ' . $name .
-            ' in ' . $trace[0]['file'] .
-            ' on line ' . $trace[0]['line'],
-            E_USER_NOTICE);
+                ' in ' . $trace[0]['file'] .
+                ' on line ' . $trace[0]['line'],
+            E_USER_NOTICE
+        );
         return null;
     }
 
