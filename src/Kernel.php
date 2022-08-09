@@ -77,4 +77,16 @@ class Kernel
         $this->controller = new LogProcessorController();
         return $this;
     }
+
+    public function getProcessor(): LogProcessorInterface {
+        return $this->processor;
+    }
+
+    public function getConfig(): LogConfigInterface {
+        return $this->config;
+    }
+
+    public function getController(): ControllerInterface {
+        return $this->controller;
+    }
 }

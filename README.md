@@ -16,3 +16,15 @@ Logs Cleanup Kata
 **Remarks**
 - This program does not have to be 100% finished or give us all concrete implementations
 - All tests should run and pass green
+
+
+Program Description
+===
+
+Sample data log is located at ./sample/
+Tests may be run via run_tests.sh script located at root of project
+binary for using cleaner with files is located at bin/cleaner
+
+Notice
+---
+2022-08-09 implementation runs only for files
