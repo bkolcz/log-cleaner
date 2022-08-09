@@ -1,0 +1,97 @@
+<?php
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+
+use LogCleaner\Kernel;
+
+require_once dirname(__DIR__) . '/vendor/autoload.php';
+
+
+$argTypes = [
+    "input:",
+    "output::",
+    "from::",
+    "to::",
+    "date-index::",
+    "config-json::",
+    "help",
+    "remove",
+    "analyse",
+    "stdout",
+    "status"
+];
+
+$options = getopt("", $argTypes);
+$commandConfig = [
+    "inputFile" => null,
+    "outputFile" => null,
+    "stdOut" => null,
+    "dateFrom" => null,
+    "dateTo" => null,
+    "spaceRegex" => null,
+    "spaceRegexRevert" => null,
+    "spaceMockCharacter" => null,
+    "delimiter" => null,
+    "enclosure" => null,
+    "replaceDateChars" => [
+        "from" => [
+            "[",
+            "]",
+            "_"
+        ],
+        "to" => " "
+    ],
+    "dateColumnIndex" => -1
+];
+$command = "";
+
+if (isset($options["help"])) {
+    echo file_get_contents(dirname(__DIR__) . '/doc/help.txt');
+    exit;
+}
+if (isset($options["remove"]) && isset($options["analyse"])) {
+    echo "--remove and --analyse options cannot be used at once, write the one you want to use and try again.\n";
+    exit;
+}
+if (isset($options["remove"])) {
+    $command = "removeAll";
+}
+if (isset($options["analyse"])) {
+    $command = "analyse";
+}
+if (isset($options["from"])) {
+    $commandConfig["dateFrom"] = new DateTime($options["from"]);
+}
+if (isset($options["to"])) {
+    $commandConfig["dateTo"] = new DateTime($options["to"]);
+}
+if (isset($options["stdout"])) {
+    $commandConfig["stdOut"] = true;
+}
+if (isset($options["date-index"])) {
+    $commandConfig["dateColumnIndex"] = $options["date-index"];
+}
+if (isset($options["input"])) {
+    $inputPath = realpath($options["input"]);
+    if (empty($inputPath)) throw new InvalidArgumentException("[input] {$options["input"]} - file not found");
+    $commandConfig["inputFile"] = $inputPath;
+}
+if (isset($options["output"])) {
+    $commandConfig["outputFile"] = str_replace("//", "/", str_replace("./", getcwd() . "/", $options["output"]));
+}
+if (array_key_exists("config-json", $options)) {
+    $jsonPath = realpath($options["config-json"]);
+    if (empty($jsonPath)) throw new InvalidArgumentException("[config-json] {$options["config-json"]} - file not found");
+    $jsonFileString = file_get_contents($jsonPath);
+    if (empty($jsonFileString)) throw new Exception("{$jsonPath} - can't read file");
+    $options["config-json"] = $jsonFileString;
+}
+
+$kernelArgs = Kernel::getTemplateArgs(type: "standard");
+$kernelArgs["jsonData"] = $options["config-json"] ?? "";
+
+$kernel = new Kernel($kernelArgs);
+$status = $kernel->run([$command => $commandConfig]);
+
+if (isset($options["status"])) {
+    echo json_encode($status, JSON_PRETTY_PRINT) . "\n";
+}

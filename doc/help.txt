@@ -1,0 +1,14 @@
+Welcome to the Log Cleaner script
+
+Options and arguments:
+--input=[path] - path to log input file
+--output=[path] - path to output
+--from=[date] - date format
+--to=[date] - date format
+--date-index=[int] - index of column with date ( index are count from 0 )
+--config-json=[path] - path to configuration file
+--remove - remove command
+--analyse - analyse command
+--stdout - if use stdout to output results
+--help - this page
+

@@ -90,14 +90,14 @@ abstract class AbstractFileLogProcessor implements LogProcessorInterface
             $pattern = substr($pattern, 0, (strlen($pattern) - strlen($delimiter)));
             $timeperiod = !empty($dateFrom) | !empty($dateTo) << 1;
             $printedLine = "";
-            var_dump( // DEBUG
-                [
-                    "dateColumnIndex" => $dateColumnIndex,
-                    "recordTimestamp" => $recordTimestamp?->getTimestamp(),
-                    "dateFromTimestamp" => $dateFrom?->getTimestamp(),
-                    "dateToTimestamp" => $dateTo?->getTimestamp(),
-                ]
-            );
+            // var_dump( // DEBUG time sort
+            //     [
+            //         "dateColumnIndex" => $dateColumnIndex,
+            //         "recordTimestamp" => $recordTimestamp?->getTimestamp(),
+            //         "dateFromTimestamp" => $dateFrom?->getTimestamp(),
+            //         "dateToTimestamp" => $dateTo?->getTimestamp(),
+            //     ]
+            // );
             switch (intval($timeperiod)) {
                 case 1:
                     if ($recordTimestamp?->getTimestamp() > $dateFrom?->getTimestamp()) {
@@ -218,10 +218,9 @@ abstract class AbstractFileLogProcessor implements LogProcessorInterface
                     $recordTimestamp = null;
                 }
             }
-            // $pattern = str_repeat("%s{$delimiter}", count($result));
-            // $pattern = substr($pattern, 0, (strlen($pattern) - strlen($delimiter)));
+
             $timeperiod = !empty($dateFrom) | !empty($dateTo) << 1;
-            // $printedLine = "";
+
             switch ($type) {
                 case "statistics":
                 default:
@@ -230,7 +229,7 @@ abstract class AbstractFileLogProcessor implements LogProcessorInterface
                             if ($recordTimestamp?->getTimestamp() > $dateFrom?->getTimestamp()) {
                                 $result[$dateColumnIndex] = preg_replace($spaceRegexRevert, " ", $result[$dateColumnIndex]);
                                 foreach ($result as $index => $value) {
-                                    $analytics[$value] = empty($analytics[$value]) ? 1 : $analytics[$value]+1;
+                                    $analytics[$value] = empty($analytics[$value]) ? 1 : $analytics[$value] + 1;
                                 }
                             }
                             break;
@@ -238,7 +237,7 @@ abstract class AbstractFileLogProcessor implements LogProcessorInterface
                             if ($recordTimestamp?->getTimestamp() < $dateTo?->getTimestamp()) {
                                 $result[$dateColumnIndex] = preg_replace($spaceRegexRevert, " ", $result[$dateColumnIndex]);
                                 foreach ($result as $index => $value) {
-                                    $analytics[$value] = empty($analytics[$value]) ? 1 : $analytics[$value]+1;
+                                    $analytics[$value] = empty($analytics[$value]) ? 1 : $analytics[$value] + 1;
                                 }
                             }
                         case 3:
@@ -248,20 +247,19 @@ abstract class AbstractFileLogProcessor implements LogProcessorInterface
                             ) {
                                 $result[$dateColumnIndex] = preg_replace($spaceRegexRevert, " ", $result[$dateColumnIndex]);
                                 foreach ($result as $index => $value) {
-                                    $analytics[$value] = empty($analytics[$value]) ? 1 : $analytics[$value]+1;
+                                    $analytics[$value] = empty($analytics[$value]) ? 1 : $analytics[$value] + 1;
                                 }
                             }
                             break;
                         default:
                             $result[$dateColumnIndex] = preg_replace($spaceRegexRevert, " ", $result[$dateColumnIndex]);
                             foreach ($result as $index => $value) {
-                                $analytics[$value] = empty($analytics[$value]) ? 1 : $analytics[$value]+1;
+                                $analytics[$value] = empty($analytics[$value]) ? 1 : $analytics[$value] + 1;
                             }
                             break;
                     }
                     break;
             }
-
         }
 
         ksort($analytics);
