@@ -10,5 +10,6 @@ Options and arguments:
 --remove - remove command
 --analyse - analyse command
 --stdout - if use stdout to output results
+--status - get status after execution
 --help - this page
 
